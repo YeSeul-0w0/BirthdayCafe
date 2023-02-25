@@ -6,10 +6,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.birthdaycafe.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
 import java.time.LocalDate
+
 
 class MainActivity : AppCompatActivity() {
     var customToolbar: Toolbar? = null
+    var customTab: TabLayout? = null
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -26,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         customToolbar = binding.toolbar
         setSupportActionBar(customToolbar)
         getSupportActionBar()?.setTitle("$getMonth"+"월");
+
+        customTab = binding.members
+        customTab!!.addTab(customTab!!.newTab().setText("테스트"))
 
     }
 }
