@@ -7,17 +7,18 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.birthdaycafe.Adapter.ListAdapter
+import com.example.birthdaycafe.data.cafeData
 import com.example.birthdaycafe.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
-import javax.annotation.meta.When
 
 class MainActivity : AppCompatActivity() {
     var customToolbar: Toolbar? = null
     var customTab: TabLayout? = null
     lateinit var cafeAdapter: ListAdapter
+    val cafeData = mutableListOf<cafeData>()
 
     val db = Firebase.firestore
 
@@ -66,31 +67,6 @@ class MainActivity : AppCompatActivity() {
                 // 작성
             }
         })
-
-
-//        db.collection("3")
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                for (document in documents) {
-//                    Log.d("CC", "${document.id} => ${document.data}")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.w("CC", "Error getting documents: ", exception)
-//            }
-
-//        val docRef = db.collection("March").document("Dami")
-//        docRef.get()
-//            .addOnSuccessListener { document ->
-//                if (document != null) {
-//                    Log.d("TT", "DocumentSnapshot data: ${document.data}")
-//                } else {
-//                    Log.d("TT", "No such document")
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.d("TT", "get failed with ", exception)
-//            }
     }
 
     private fun getBirthday(hero: String){
@@ -122,11 +98,24 @@ class MainActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    Log.d("Date", "${document.id} => ${document.data}")
+                    val temp = document.data
+                    println()
+                    if (!document.id.equals("birthday")){
+                        val cafeLocated = temp.getValue("located").toString()
+                        val cafeStation = temp.getValue("station").toString()
+                        val cafeTime = temp.getValue("time").toString()
+                        cafeData.apply {
+                            add(cafeData(name=document.id, located = cafeLocated, station = cafeStation, time = cafeTime))
+                        }
+                    }
                 }
+                cafeAdapter.datas = cafeData
+                cafeAdapter.notifyDataSetChanged()
+
             }
             .addOnFailureListener { exception ->
                 Log.d("Error", "Error getting documents: ", exception)
             }
+
     }
 }
