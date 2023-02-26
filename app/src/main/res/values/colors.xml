@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main">#FCD8D4</color>
+    <color name="red_main">#8A2A2B</color>
+    <color name="yellow_maim">#F2C763</color>
+    <color name="black_main">#101820</color>
+    <color name="tab">#F8E2CF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
