@@ -6,16 +6,18 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.birthdaycafe.Adapter.ListAdapter
 import com.example.birthdaycafe.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
-
+import javax.annotation.meta.When
 
 class MainActivity : AppCompatActivity() {
     var customToolbar: Toolbar? = null
     var customTab: TabLayout? = null
+    lateinit var cafeAdapter: ListAdapter
 
     val db = Firebase.firestore
 
@@ -40,25 +42,10 @@ class MainActivity : AppCompatActivity() {
         customTab!!.addTab(customTab!!.newTab().setText("다미"))
         customTab!!.addTab(customTab!!.newTab().setText("한동"))
 
-        val dayTextView = binding.day
 
-        val loadDay = db.collection("Dami").document("birthday")
-        loadDay.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val temp = document.data
-                    val year = temp!!.getValue("year").toString()
-                    val month = temp.getValue("month").toString()
-                    val day = temp.getValue("day").toString()
-                    dayTextView.setText("탄생일: $year-$month-$day")
-                } else {
-                    dayTextView.setText("no data")
-                    Log.d("Null", "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("Error", "get failed with ", exception)
-            }
+
+        getBirthday("Dami")
+        initRecycler("Dami")
 
         customTab!!.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -69,9 +56,18 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 println(tab!!.text)
+                var deliver: String = ""
+                when(tab!!.text){
+                    "한동" -> deliver = "Handong"
+                    "다미" -> deliver = "Dami"
+                }
+                getBirthday(deliver)
+                initRecycler(deliver)
                 // 작성
             }
         })
+
+
 //        db.collection("3")
 //            .get()
 //            .addOnSuccessListener { documents ->
@@ -95,5 +91,42 @@ class MainActivity : AppCompatActivity() {
 //            .addOnFailureListener { exception ->
 //                Log.d("TT", "get failed with ", exception)
 //            }
+    }
+
+    private fun getBirthday(hero: String){
+        val dayTextView = binding.day
+        val loadDay = db.collection("$hero").document("birthday")
+        loadDay.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val temp = document.data
+                    val year = temp!!.getValue("year").toString()
+                    val month = temp.getValue("month").toString()
+                    val day = temp.getValue("day").toString()
+                    dayTextView.setText("탄생일: $year-$month-$day")
+                } else {
+                    dayTextView.setText("no data")
+                    Log.d("Null", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Error", "get failed with ", exception)
+            }
+    }
+
+    private fun initRecycler(docName:String ){
+        cafeAdapter = ListAdapter(this)
+        val rv = binding.listUp
+        rv.adapter = cafeAdapter
+        db.collection("$docName")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("Date", "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Error", "Error getting documents: ", exception)
+            }
     }
 }
