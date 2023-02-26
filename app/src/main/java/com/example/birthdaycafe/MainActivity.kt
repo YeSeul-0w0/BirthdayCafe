@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.RecyclerView
 import com.example.birthdaycafe.Adapter.ListAdapter
 import com.example.birthdaycafe.data.cafeData
 import com.example.birthdaycafe.databinding.ActivityMainBinding
@@ -43,10 +44,8 @@ class MainActivity : AppCompatActivity() {
         customTab!!.addTab(customTab!!.newTab().setText("다미"))
         customTab!!.addTab(customTab!!.newTab().setText("한동"))
 
-
-
         getBirthday("Dami")
-        initRecycler("Dami")
+        updateRecycler("Dami")
 
         customTab!!.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     "다미" -> deliver = "Dami"
                 }
                 getBirthday(deliver)
-                initRecycler(deliver)
+                updateRecycler(deliver)
                 // 작성
             }
         })
@@ -90,10 +89,11 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun initRecycler(docName:String ){
+    private fun updateRecycler(docName:String){
+        val recyclerView = binding.listUp
         cafeAdapter = ListAdapter(this)
-        val rv = binding.listUp
-        rv.adapter = cafeAdapter
+        cafeData.clear()
+        recyclerView.adapter = cafeAdapter
         db.collection("$docName")
             .get()
             .addOnSuccessListener { result ->
