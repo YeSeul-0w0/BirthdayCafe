@@ -32,23 +32,56 @@ class MainActivity : AppCompatActivity() {
         val getMonth: Int = nowDate.monthValue
 
         // set toolbar title
-        customToolbar = binding.toolbar
-        setSupportActionBar(customToolbar)
-        getSupportActionBar()?.setTitle("$getMonth"+"월");
+        // customToolbar = binding.toolbar
+        // setSupportActionBar(customToolbar)
+        // getSupportActionBar()?.setTitle("Dreamcather");
 
         customTab = binding.members
-        customTab!!.addTab(customTab!!.newTab().setText("테스트"))
+        customTab!!.addTab(customTab!!.newTab().setText("다미"))
+        customTab!!.addTab(customTab!!.newTab().setText("한동"))
 
-        db.collection("March")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    Log.d("CC", "${document.id} => ${document.data}")
+        val dayTextView = binding.day
+
+        val loadDay = db.collection("Dami").document("birthday")
+        loadDay.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val temp = document.data
+                    val year = temp!!.getValue("year").toString()
+                    val month = temp.getValue("month").toString()
+                    val day = temp.getValue("day").toString()
+                    dayTextView.setText("탄생일: $year-$month-$day")
+                } else {
+                    dayTextView.setText("no data")
+                    Log.d("Null", "No such document")
                 }
             }
             .addOnFailureListener { exception ->
-                Log.w("CC", "Error getting documents: ", exception)
+                Log.d("Error", "get failed with ", exception)
             }
+
+        customTab!!.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                println(tab!!.text)
+                // 작성
+            }
+        })
+//        db.collection("3")
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                for (document in documents) {
+//                    Log.d("CC", "${document.id} => ${document.data}")
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.w("CC", "Error getting documents: ", exception)
+//            }
 
 //        val docRef = db.collection("March").document("Dami")
 //        docRef.get()
