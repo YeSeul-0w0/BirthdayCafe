@@ -22,7 +22,6 @@ class ListAdapter (private val context: Context) : RecyclerView.Adapter<ListAdap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
-
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
