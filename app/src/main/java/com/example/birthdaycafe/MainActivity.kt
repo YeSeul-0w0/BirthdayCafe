@@ -111,11 +111,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 cafeAdapter.datas = cafeData
                 cafeAdapter.notifyDataSetChanged()
-
             }
             .addOnFailureListener { exception ->
                 Log.d("Error", "Error getting documents: ", exception)
             }
+
 
     }
 }
