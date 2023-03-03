@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                println(tab!!.text)
                 var deliver: String = ""
                 when(tab!!.text){
                     "한동" -> deliver = "Handong"
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                     val year = temp!!.getValue("year").toString()
                     val month = temp.getValue("month").toString()
                     val day = temp.getValue("day").toString()
-                    dayTextView.setText("탄생일: $year-$month-$day")
+                    dayTextView.setText("$year-$month-$day")
                 } else {
                     dayTextView.setText("no data")
                     Log.d("Null", "No such document")
@@ -99,7 +98,6 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val temp = document.data
-                    println()
                     if (!document.id.equals("birthday")){
                         val cafeLocated = temp.getValue("located").toString()
                         val cafeStation = temp.getValue("station").toString()
