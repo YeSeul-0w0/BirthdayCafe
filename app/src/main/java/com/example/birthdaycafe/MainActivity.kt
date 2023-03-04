@@ -113,7 +113,5 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("Error", "Error getting documents: ", exception)
             }
-
-
     }
 }
