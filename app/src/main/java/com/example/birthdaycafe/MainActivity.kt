@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.RecyclerView
 import com.example.birthdaycafe.Adapter.ListAdapter
 import com.example.birthdaycafe.data.cafeData
 import com.example.birthdaycafe.databinding.ActivityMainBinding
