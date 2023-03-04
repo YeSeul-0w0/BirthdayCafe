@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <meta-data
+        android:name="com.kakao.sdk.AppKey"
+        android:value="d6219dc843cbfd76cfb1ab27226b2957" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
