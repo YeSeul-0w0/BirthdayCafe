@@ -3,6 +3,7 @@ package com.example.birthdaycafe
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,7 +13,10 @@ import com.example.birthdaycafe.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.time.LocalDate
+
 
 class MainActivity : AppCompatActivity() {
     var customToolbar: Toolbar? = null
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     val cafeData = mutableListOf<cafeData>()
 
     val db = Firebase.firestore
+    val storage = Firebase.storage
+    val storageRef = storage.reference
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -40,11 +46,11 @@ class MainActivity : AppCompatActivity() {
         // getSupportActionBar()?.setTitle("Dreamcather");
 
         customTab = binding.members
-        customTab!!.addTab(customTab!!.newTab().setText("다미"))
-        customTab!!.addTab(customTab!!.newTab().setText("한동"))
+        customTab!!.addTab(customTab!!.newTab().setText("test_name1"))
+        customTab!!.addTab(customTab!!.newTab().setText("test_name2"))
 
-        getBirthday("Dami")
-        updateRecycler("Dami")
+        getBirthday("Member1")
+        updateRecycler("Member1")
 
         customTab!!.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -56,8 +62,8 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 var deliver: String = ""
                 when(tab!!.text){
-                    "한동" -> deliver = "Handong"
-                    "다미" -> deliver = "Dami"
+                    "test_name1" -> deliver = "Member1"
+                    "test_name2" -> deliver = "Member2"
                 }
                 getBirthday(deliver)
                 updateRecycler(deliver)
@@ -92,6 +98,9 @@ class MainActivity : AppCompatActivity() {
         cafeAdapter = ListAdapter(this)
         cafeData.clear()
         recyclerView.adapter = cafeAdapter
+
+        val test= binding.listUp
+
         db.collection("$docName")
             .get()
             .addOnSuccessListener { result ->
@@ -102,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                         val cafeStation = temp.getValue("station").toString()
                         val cafeTime = temp.getValue("time").toString()
                         cafeData.apply {
-                            add(cafeData(name=document.id, located = cafeLocated, station = cafeStation, time = cafeTime))
+                            add(cafeData(name =document.id, located = cafeLocated, station = cafeStation, time = cafeTime))
                         }
                     }
                 }

@@ -27,7 +27,7 @@
                 android:background="@color/red_main"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
-                app:title="Dreamcathcer"
+                app:title="Your Idol"
                 app:titleTextColor="@color/yellow_maim" />
 
             <com.google.android.material.tabs.TabLayout

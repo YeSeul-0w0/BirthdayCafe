@@ -10,7 +10,7 @@
         style="@style/Widget.AppCompat.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="INSOMNIA"
+        android:text="Loading"
         android:textColor="@color/yellow_maim"
         android:textSize="24sp"
         android:textStyle="bold|italic"
